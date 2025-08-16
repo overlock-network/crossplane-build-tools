@@ -42,6 +42,7 @@ export KUBECTL
 export KUSTOMIZE
 export HELM
 export HELM3
+export OVERLOCK
 export USE_HELM3
 export GOMPLATE
 export ISTIO
