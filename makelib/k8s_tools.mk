@@ -80,6 +80,10 @@ UPTEST := $(TOOLS_HOST_DIR)/uptest-$(UPTEST_VERSION)
 YQ_VERSION ?= v4.40.5
 YQ := $(TOOLS_HOST_DIR)/yq-$(YQ_VERSION)
 
+# the version of overlock to use
+OVERLOCK_VERSION ?= latest
+OVERLOCK := $(TOOLS_HOST_DIR)/overlock-$(OVERLOCK_VERSION)
+
 # ====================================================================================
 # Common Targets
 
@@ -94,6 +98,7 @@ k8s_tools.buildvars:
 	@echo KUTTL=$(KUTTL)
 	@echo CHAINSAW=$(CHAINSAW)
 	@echo YQ=$(YQ)
+	@echo OVERLOCK=$(OVERLOCK)
 
 build.vars: k8s_tools.buildvars
 
@@ -208,3 +213,12 @@ $(YQ):
 	curl -fsSLo $(YQ) https://github.com/mikefarah/yq/releases/download/$(YQ_VERSION)/yq_$(SAFEHOST_PLATFORM) && \
 	chmod +x $(YQ) || $(FAIL)
 	@$(OK) installing yq $(YQ_VERSION)
+
+# overlock download and install
+$(OVERLOCK):
+	@$(INFO) installing overlock $(OVERLOCK_VERSION)
+	@mkdir -p $(TOOLS_HOST_DIR)
+	@curl -fsSL "https://raw.githubusercontent.com/overlock-network/overlock/refs/heads/main/scripts/install.sh" | sh && \
+	mv overlock $(OVERLOCK) || $(FAIL)
+	@chmod +x $(OVERLOCK)
+	@$(OK) installing overlock $(OVERLOCK_VERSION)
